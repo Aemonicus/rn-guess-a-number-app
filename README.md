@@ -15,9 +15,9 @@ Donc pas de HTML, pas de CSS, pas de JSX comme sur React mais du JSX plus limit�
 
 IMPORTANT : Pour définir une width à un élément comme un bouton, il faut passer par une `<View></View>` encapsulant l'élément.
 
-Exemple avec un 
+Exemple avec un `<Button title="test"/>`
 ```javascript
-<Button />
+
   <View style={styles.button}>
     <Button title="CANCEL" color="red" onPress={onCancel} />
   </View>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 --------------------------------
 `<FlatList></FlatList>` est un composant qui remplace `<ScrollView></ScrollView>` car plus optimisé. Il n'affiche que les éléments de liste nécessaire et pas ceux cachés/invisibles..
 Attention, le composant utilise son "propre" map() avec le props renderItem
-Exemple de 
+Exemple  
 ```javascript
 <FlatList
         keyExtractor={(item, index) => item.id}
@@ -51,6 +51,27 @@ Exemple de
 ```
 
 
+
+--------------------------------
+`<Text></Text>` est un composant utilisé pour afficher du texte. Composant de base obligatoire pour du texte.
+
+
+
+--------------------------------
+`<TextInput/>` est un composant utilisé pour afficher une zone de texte intéractive équivalent à un `<input>`. Composant de base obligatoire pour du permettre de la saisie de texte.
+
+
+
+--------------------------------
+`<Button title=""/>` est un composant utilisé pour afficher un bouton. La props title est obligatoire. D'autres props comme onPress peuvent être utilisés pour les évènements.
+Exemple
+```javascript
+<View>
+  <Button title="Reset" onPress={() => { }} />
+  <Button title="Confirm" onPress={() => { }} />
+</View>
+```
+
 --------------------------------
 Style
 
@@ -62,7 +83,39 @@ Style
 
 - Penser à utiliser flex:1 si on veut qu'un élément prenne de base toute la place disponible
 
-- On peut placer verticalement un élément simplement avec marginVertical
+- On peut placer verticalement un élément simplement avec `marginVertical`
+
+- On peut placer horizontalement un élément simplement avec `paddingHorizontal`
 
 - Les margins négatifs ne sont pas pris en compte sur Android
-"# rn-guess-a-number-app" 
+
+- Si je veux poser une box-shadow pour, par exemple, créer une card, je dois utiliser :
+  - Pour iOS `shadow..`
+  ```javascript
+    width: 300,
+    maxWidth: "80%",
+    alignItems: "center",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    backgroundColor: "white",
+    elevation: 5,
+    padding: 20,
+    borderRadius: 10
+   ```
+  - Pour Android `elevation`
+  ```javascript
+    width: 300,
+    maxWidth: "80%",
+    alignItems: "center",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    backgroundColor: "white",
+    elevation: 5,
+    padding: 20,
+    borderRadius: 10
+  ```
+  Du coup c'est beaucoup plus limité en terme de personnalisation sur Android qui applique de base le style Materialize UI. On posera `shadow..` et `elevation` dans le même style car React Native compile pour les deux systèmes en même temps mais une seule propriété fonctionnera suivant le système du client
