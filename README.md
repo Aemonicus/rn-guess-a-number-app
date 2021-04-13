@@ -17,7 +17,6 @@ IMPORTANT : Pour définir une width à un élément comme un bouton, il faut pas
 
 Exemple avec un `<Button title="test"/>`
 ```javascript
-
   <View style={styles.button}>
     <Button title="CANCEL" color="red" onPress={onCancel} />
   </View>
@@ -32,6 +31,20 @@ const styles = StyleSheet.create({
 --------------------------------
 `<ScrollView></ScrollView>` est un composant utilisé à la place du composant `<View></View>` pour permettre le défilement de l'écran car par défaut ce comportement n'est pas supporté sur mobile. Utilisé pour afficher des listes.
 
+
+
+--------------------------------
+`<TouchableWithoutFeedback></TouchableWithoutFeedback>` est un composant utilisé pour rendre toute une zone intéractive (écouter tous les évènements de type toucher/tap) sans effet visible. 
+Exemple avec un évènement fourni de base dans l'API de react-native (il faut quand même l'importer au tout début) qui permet au toucher n'importe où en dehors du clavier de fermer le clavier : 
+```javascript
+import { View, StyleSheet, Text, Button, TouchableWithoutFeedback, Keyboard } from 'react-native'
+
+<TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
+  <View style={styles.screen}>
+  ....
+  </View>
+</TouchableWithoutFeedback>
+```
 
 
 --------------------------------
