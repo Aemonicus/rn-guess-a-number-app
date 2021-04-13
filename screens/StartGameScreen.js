@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Button, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, StyleSheet, Text, Button, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 
 import Card from '../components/Card'
 import Input from '../components/Input'
@@ -8,10 +8,34 @@ import Colors from '../constants/colors'
 const StartGameScreen = () => {
 
   const [enteredValue, setEnteredValue] = useState('')
+  const [confirmed, setConfirmed] = useState(false)
+  const [selectedNumber, setSelectedNumber] = useState()
 
   const numberInputHandler = inputText => {
     // Remove everything that is not a number 
     setEnteredValue(inputText.replace(/[^0-9]/g, ''))
+  }
+
+  const resetInputHandler = () => {
+    setEnteredValue('')
+    setConfirmed(false)
+  }
+
+  const confirmInputHandler = () => {
+    const chosenNumber = parseInt(enteredValue)
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert("Invalid number !", "Number must be between 1 and 99", [{ text: "Okay", style: "destructive", onPress: resetInputHandler }])
+      return
+    }
+    setConfirmed(true)
+    setSelectedNumber(parseInt(enteredValue))
+    setEnteredValue('')
+  }
+
+  let confirmedOutput
+
+  if (confirmed) {
+    confirmedOutput = <Text>Chosen Number: {selectedNumber}</Text>
   }
 
   return (
@@ -32,13 +56,14 @@ const StartGameScreen = () => {
           />
           <View style={styles.buttonContainer}>
             <View style={styles.button}>
-              <Button title="Reset" color={Colors.secondary} onPress={() => { }} />
+              <Button title="Reset" color={Colors.secondary} onPress={resetInputHandler} />
             </View>
             <View style={styles.button}>
-              <Button title="Confirm" color={Colors.primary} onPress={() => { }} />
+              <Button title="Confirm" color={Colors.primary} onPress={confirmInputHandler} />
             </View>
           </View>
         </Card>
+        {confirmedOutput}
       </View>
     </TouchableWithoutFeedback>
   )
