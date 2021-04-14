@@ -67,6 +67,7 @@ Exemple
 
 --------------------------------
 `<Text></Text>` est un composant utilisé pour afficher du texte. Composant de base obligatoire pour du texte.
+Le style passé d'un `<Text></Text>` parent est transféré à tous les `<Text></Text>` enfants (si l'un dans l'autre). De plus, `flexbox` n'est pas pris en compte nativement avec les `<Text></Text>`
 
 
 
@@ -213,3 +214,5 @@ export default BodyText
     borderRadius: 10
   ```
   Du coup c'est beaucoup plus limité en terme de personnalisation sur Android qui applique de base le style Materialize UI. On posera `shadow..` et `elevation` dans le même style car React Native compile pour les deux systèmes en même temps mais une seule propriété fonctionnera suivant le système du client
+
+- Pour utiliser du style différent pour deux éléments dans un même texte, on peut mettre un `<Text></Text>` dans un `<Text></Text>`. Le style passé d'un `<Text></Text>` est transféré à tous les `<Text></Text>` enfants. De plus, `flexbox` n'est pas pris en compte nativement avec les `<Text></Text>`

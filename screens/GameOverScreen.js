@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button, Image } from 'react-native'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 import BodyText from '../components/BodyText'
 
@@ -11,15 +12,20 @@ const GameOverScreen = ({ roundsNumber, userNumber, onRestart }) => {
         <Image
           style={styles.image}
           // Version image en local
-          // source={require('../assets/success.png')}
+          source={require('../assets/success.png')}
 
           // Version image depuis le web
-          source={{ uri: 'https://www.updatepedia.com/wp-content/uploads/2019/04/Successss.jpg' }}
+          // source={{ uri: 'https://www.updatepedia.com/wp-content/uploads/2019/04/Successss.jpg' }}
           resizeMode="cover"
         />
       </View>
-      <BodyText>Number of Rounds: {roundsNumber}</BodyText>
-      <BodyText>Number was: {userNumber}</BodyText>
+      <View style={styles.resultContainer}>
+        <BodyText style={styles.resultText}>Your phone needed
+          <Text style={styles.highlight}> {roundsNumber} </Text> rounds to guess the correct number that was
+
+          <Text style={styles.highlight}> {userNumber}</Text>
+        </BodyText>
+      </View>
       <Button title="NEW GAME" onPress={() => onRestart()} />
     </View>
   )
@@ -30,6 +36,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  resultContainer: {
+    marginHorizontal: 30,
+    marginVertical: 20
+  },
+  resultText: {
+    textAlign: 'center',
+    fontSize: 20
+  },
+  highlight: {
+    color: Colors.primary
   },
   // Version avec component View autour de l'image
   imageContainer: {
