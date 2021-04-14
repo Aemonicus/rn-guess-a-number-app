@@ -88,6 +88,33 @@ Exemple
 
 
 --------------------------------
+`<Image source={require('')}/>` est un composant utilisé pour afficher une image. 
+Si on va chercher une image en local, on utilise la méthode `require()`
+Si on va chercher l'image sur le web, on utilise `{uri: ""}` ATTENTION, pour les images récupérées sur le web il faudra toujours mettre une `width` et une `height`
+Exemple
+```javascript
+
+<Image
+  style={styles.image}
+  source={require('../assets/success.png')}
+  source={{ uri: 'https://www.updatepedia.com/wp-content/uploads/2019/04/Successss.jpg' }}
+  resizeMode="cover"
+/>
+
+const styles = StyleSheet.create({
+  image: {
+    width: 300,
+    height: 300,
+    borderRadius: 200,
+    borderWidth: 3,
+    borderColor: 'black',
+    marginVertical: 30
+  }
+})
+
+```
+
+--------------------------------
 `<AppLoading />` est un composant utilisé pour différer le chargement de la page en attendant qu'un certain élément ait terminé. 
 Penser à poser dans le terminal : expo install expo-app-loading
 
