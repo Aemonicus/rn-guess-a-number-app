@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, Button, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
+import BodyText from '../components/BodyText'
 
 import Card from '../components/Card'
 import Input from '../components/Input'
@@ -50,7 +51,7 @@ const StartGameScreen = ({ onStartGame }) => {
       <View style={styles.screen}>
         <Text style={styles.title}>Start a New Game !</Text>
         <Card style={styles.inputContainer}>
-          <Text>Select a Number</Text>
+          <BodyText style={styles.text}>Select a Number</BodyText>
           <Input
             style={styles.input}
             blurOnSubmit

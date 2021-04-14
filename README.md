@@ -135,6 +135,25 @@ Style
 
 - On peut placer horizontalement un élément simplement avec `paddingHorizontal`
 
+- On ne peut pas poser une `fontFamily` à un élément parent pour qu'elle soit passée à tous les enfants, il faut soit poser la `fontFamily` à tous les éléments que l'on souhaite, soit créer un component qui aura comme style la `fontFamily` qui nous intéresse. Ensuite on remplace tous les components `<Text></Text>` par le component que l'on vient de créer.
+Exemple :
+
+ ```javascript
+import React from 'react'
+import { Text, StyleSheet } from 'react-native'
+
+const BodyText = ({ children }) => <Text style={styles.body}>{children}</Text>
+
+const styles = StyleSheet.create({
+  body: {
+    fontFamily: 'open-sans'
+  }
+})
+
+export default BodyText
+
+```
+
 - Les margins négatifs ne sont pas pris en compte sur Android
 
 - Si je veux poser une box-shadow pour, par exemple, créer une card, je dois utiliser :
