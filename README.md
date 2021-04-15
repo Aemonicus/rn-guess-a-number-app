@@ -35,6 +35,54 @@ const styles = StyleSheet.create({
 
 `<ScrollView></ScrollView>` est un composant utilisé à la place du composant `<View></View>` pour permettre le défilement de l'écran car par défaut ce comportement n'est pas supporté sur mobile. Utilisé pour afficher des listes.
 
+Si on veut styliser ce composant, il vaut mieux passer par la propriété `contentContainerStyle={}` plutôt que l'objet `style` classique car ce composant, comme `flatList` réagit différement.
+
+On peut utiliser ce composant à l'intérieure d'un `<View></View>`, notamment pour styliser la liste (mettre une largeure..) MAIS ATTENTION il faut mettre `flex:1` dans le style de `<View></View>` sinon le défilement ne fonctionne pas sur Android.
+
+Exemple
+```javascript
+
+const renderListItem = (item, numOfRound) => {
+  return (
+    <View style={styles.listItem} key={item}>
+      <BodyText>#{numOfRound}</BodyText>
+      <BodyText>{item}</BodyText>
+    </View>
+  )
+}
+
+const GameScreen = ({ userChoice, onGameOver }) => {
+
+<View style={styles.listContainer}>
+  <ScrollView contentContainerStyle={styles.list}>
+    {pastGuesses.map((item, index) => renderListItem(item, pastGuesses.length - index))}
+  </ScrollView>
+</View>
+
+}
+
+  const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    padding: 10,
+    alignItems: 'center',
+  },
+  list: {
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "flex-end"
+  },
+  listItem: {
+    borderColor: "#ccc",
+    padding: 15,
+    marginVertical: 10,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
+})
+```
 
 
 --------------------------------
@@ -57,6 +105,9 @@ import { View, StyleSheet, Text, Button, TouchableWithoutFeedback, Keyboard } fr
 # Composant de base
 
 `<FlatList></FlatList>` est un composant qui remplace `<ScrollView></ScrollView>` car plus optimisé. Il n'affiche que les éléments de liste nécessaire et pas ceux cachés/invisibles..
+
+Si on veut styliser ce composant, il vaut mieux passer par la propriété `contentContainerStyle={}` plutôt que l'objet `style` classique car ce composant, comme `scrollView` réagit différement.
+
 Attention, le composant utilise son "propre" map() avec le props renderItem
 Exemple  
 ```javascript
@@ -177,7 +228,9 @@ export default function App() {
 
 - Si l'élément parent ne possède pas de valeur fixe avec width and height ou flex (ex : flex:1), le parent n'aura pas de dimension et les éléments enfants ne seront pas visibles
 
-- Penser à utiliser flex:1 si on veut qu'un élément prenne de base toute la place disponible
+- Penser à utiliser `flex:1` si on veut qu'un élément prenne de base toute la place disponible
+
+- Penser à utilser `flexGrowl:1` si on veut le même comportement qu'au dessus sans les limitations de `flex:1` (par exemple si on veut défiler une liste, avec `flex:1` la liste va revenir automatiquement à la place d'origine)
 
 - On peut placer verticalement un élément simplement avec `marginVertical`
 
