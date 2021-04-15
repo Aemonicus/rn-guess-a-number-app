@@ -67,7 +67,9 @@ Exemple
 
 --------------------------------
 `<Text></Text>` est un composant utilisé pour afficher du texte. Composant de base obligatoire pour du texte.
-Le style passé d'un `<Text></Text>` parent est transféré à tous les `<Text></Text>` enfants (si l'un dans l'autre). De plus, `flexbox` n'est pas pris en compte nativement avec les `<Text></Text>`
+- Le style passé d'un `<Text></Text>` parent est transféré à tous les `<Text></Text>` enfants (si l'un dans l'autre). 
+C'est le seul composant qui transmet sont style à ses composants enfants, si ces enfants sont des `<Text></Text>`. 
+- De plus, `flexbox` n'est pas pris en compte nativement avec les `<Text></Text>`
 
 
 
@@ -149,9 +151,9 @@ export default function App() {
 ```
 
 --------------------------------
-Style
+# Style
 
-- De base les éléments sont en display:flex, flexDirection: "column"
+- De base les éléments sont en display:flex, flexDirection: "column" SAUF `<Text></Text>`
 
 - On ne peut pas utiliser de valeur comme px, soit pourcentage soit juste la valeur seule qui correspondra à la densité du pixel sur l'écran
 
@@ -216,3 +218,42 @@ export default BodyText
   Du coup c'est beaucoup plus limité en terme de personnalisation sur Android qui applique de base le style Materialize UI. On posera `shadow..` et `elevation` dans le même style car React Native compile pour les deux systèmes en même temps mais une seule propriété fonctionnera suivant le système du client
 
 - Pour utiliser du style différent pour deux éléments dans un même texte, on peut mettre un `<Text></Text>` dans un `<Text></Text>`. Le style passé d'un `<Text></Text>` est transféré à tous les `<Text></Text>` enfants. De plus, `flexbox` n'est pas pris en compte nativement avec les `<Text></Text>`
+
+
+--------------------------------
+# Créer un bouton personnalisé
+On peut remplacer les composants `<Button>` par des composants customs, notamment pour le style. L'import de TouchableOpacity est important (ou un autre Touchable) pour rendre le bouton "clickable"
+
+Exemple
+```javascript
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+
+import Colors from '../constants/colors'
+
+const MainButton = ({ children, onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+        <Text style={styles.buttonText}>{children}</Text>
+      </View>
+    </TouchableOpacity>
+  )
+}
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 25
+  },
+  buttonText: {
+    color: "white",
+    fontFamily: "open-sans",
+    fontSize: 20
+  }
+})
+
+export default MainButton
+```

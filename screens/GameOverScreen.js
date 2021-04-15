@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, Image } from 'react-native'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 import BodyText from '../components/BodyText'
+import MainButton from '../components/MainButton'
 
 const GameOverScreen = ({ roundsNumber, userNumber, onRestart }) => {
   return (
@@ -26,7 +27,7 @@ const GameOverScreen = ({ roundsNumber, userNumber, onRestart }) => {
           <Text style={styles.highlight}> {userNumber}</Text>
         </BodyText>
       </View>
-      <Button title="NEW GAME" onPress={() => onRestart()} />
+      <MainButton onPress={() => onRestart()}>NEW GAME</MainButton>
     </View>
   )
 }
