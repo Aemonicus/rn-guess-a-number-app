@@ -39,6 +39,28 @@ const styles = StyleSheet.create({
 
 ```
 
+Un exemple pour avoir un cercle : 
+
+```javascript
+import React from 'react'
+import { Text, StyleSheet, Dimensions } from 'react-native'
+
+const styles = StyleSheet.create({
+   imageContainer: {
+    width: Dimensions.get("window").width * 0.7,
+    // On utilise la width même pour la hauteur car pour réaliser un cercle parfait on doit avoir la même dimension hauteur/largeure, le tout divisé par deux
+    height: Dimensions.get("window").width * 0.7,
+    borderRadius: Dimensions.get("window").width * 0.7 / 2,
+    borderWidth: 3,
+    borderColor: "black",
+    overflow: "hidden",
+    marginVertical: 30
+  },
+})
+
+```
+
+
 Ci-dessus, je peux décider de la largeure du bouton grâce à 
   - width en fixe
   - width en pourcentage
