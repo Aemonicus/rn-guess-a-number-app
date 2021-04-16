@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, Alert, ScrollView, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Alert, ScrollView, FlatList, Dimensions } from 'react-native'
 import Card from '../components/Card'
 import MainButton from '../components/MainButton'
 import NumberContainer from '../components/NumberContainer'
@@ -57,7 +57,10 @@ const GameScreen = ({ userChoice, onGameOver }) => {
     setCurrentGuess(nextNumber)
     // setRounds(curRounds => curRounds + 1)
     setPastGuesses(curPastGuesses => [nextNumber.toString(), ...curPastGuesses])
-
+  }
+  // Exemple d'utilisation de l'objet Dimensions
+  if (Dimensions.get("window").height > 600) {
+    return <View>...</View>
   }
 
   return (
@@ -94,13 +97,13 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginTop: 20,
+    marginTop: Dimentions.get("window").height > 600 ? 20 : 10,
     width: 500,
     maxWidth: "90%"
   },
   listContainer: {
     flex: 1,
-    width: "60%"
+    width: Dimensions.get("window").width > 350 ? "60%" : "80%"
   },
   list: {
     flexGrow: 1,
