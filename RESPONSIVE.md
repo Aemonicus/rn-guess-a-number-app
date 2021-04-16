@@ -17,7 +17,16 @@ const styles = StyleSheet.create({
 
 ```
 
+- Dans le fichier `app.json`, dans l'objet `expo`, il y a une propriété `"orientation"`, si on lui donne une valeur (portrait ou landscape), l'application sera bloquée dans l'orientation choisie. Si on ne veut pas bloquer l'orientation, il faut utiliser `"default"`
+  Exemple
+  ```javascript
+  "orientation": "default",
+  ```
 
+- Penser à utiliser le component `<ScrollView></ScrollView>` autour de tous les autres components pour rendre une page scrollable en mode landscape.
+
+- Penser à utiliser le composant `<KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}></KeyboardAvoidingView>` si on veut s'assurer que le clavier reste toujours en dessous d'un input présent sur la page. Ce composant doit être sous le component `<ScrollView></ScrollView>` et encadrer tous les autres. `behavior` et `keyboardVerticalOffset` permettent de placer le clavier sous l'input de 30 unités de pixel.
+`behavior` va utiliser `"position"` pour iOS et `"padding"` pour Android
 
 --------------------------------
 # Dimensions API
@@ -108,5 +117,60 @@ return (
       <Card style={Dimensions.get("window").height > 600 ? styles.buttonContainer : styles.buttonContainerSmall}>
 )
 ...
+
+```
+
+Pour adapter la taille d'éléments quand on passe du mode portrait au mode paysage, par exemple pour des boutons, on va devoir mettre un écouteur d'évènements car le calcul de taille d'éléments, avec ou sans `Dimensions`, ne se fait qu'une seule fois !
+Pour changer la taille de ses éléments avec `Dimensions`, on va :
+  - utiliser `useState` pour stocker dans le state l'état du bouton (sa dimension dans notre exemple)
+  - poser un écouteur d'évènements
+  - utiliser le hook `useEffect` qui va relancer le code à chaque fois que l'écouteur d'évènements est repéré
+  - sortir le style à changer de l'objet `styleSheet` pour le mettre en style inline dans le JSX (on peut laisser le reste du style dans l'objet `styleSheet` si on avait posé autre chose que la taille à changer, dans ce cas on aura du style inline ET dans l'objet `styleSheet`)
+
+Exemple
+```javascript
+import React, { useState, useEffect } from 'react'
+import { Text, StyleSheet, Dimensions } from 'react-native'
+
+...
+
+const StartGameScreen = ({ onStartGame }) => {
+
+  const [enteredValue, setEnteredValue] = useState('')
+  const [confirmed, setConfirmed] = useState(false)
+  const [selectedNumber, setSelectedNumber] = useState()
+  const [buttonWidth, setButtonWidth] = useState(Dimensions.get("window").width / 4)
+...
+
+
+useEffect(() => {
+    const updateLayout = () => {
+      setButtonWidth(Dimensions.get("window").width / 4)
+    }
+
+    Dimensions.addEventListener('change', updateLayout)
+    return () => {
+      Dimensions.removeEventListener('change', updateLayout)
+    }
+  })
+
+  return (
+    <ScrollView>
+      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}>
+        <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
+        ...
+              <View style={styles.buttonContainer}>
+                <View style={{ width: buttonWidth }}>
+                  <Button title="Reset" color={Colors.secondary} onPress={resetInputHandler} />
+                </View>
+                <View style={{ width: buttonWidth }}>
+                  <Button title="Confirm" color={Colors.primary} onPress={confirmInputHandler} />
+                </View>
+        ...        
+         </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </ScrollView>
+  )
+}
 
 ```

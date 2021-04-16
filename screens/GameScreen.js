@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginTop: Dimentions.get("window").height > 600 ? 20 : 10,
+    marginTop: Dimensions.get("window").height > 600 ? 20 : 10,
     width: 500,
     maxWidth: "90%"
   },
