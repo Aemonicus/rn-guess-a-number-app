@@ -174,3 +174,23 @@ useEffect(() => {
 }
 
 ```
+
+
+
+--------------------------------
+# ScreenOrientation API
+API fourni par expo, donc utilisable uniquement avec expo, qui permet de vérifier l'orientation de l'appareil et réaliser certaines actions.
+Malheureusement cette API n'a pas l'air de fonctionner sur mon iphone donc on oublie pour l'instant. A voir plus tard car l'idée permet de se passer du Dimensions API qui se base sur une valeur mais Dimensions API reste l'API de référence pour l'instant encore
+
+Exemple
+```javascript
+import * as ScreenOrientation from 'expo-screen-orientation'
+
+const GameScreen = ({ userChoice, onGameOver }) => {
+  // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
+  ...
+
+```
+
+
+

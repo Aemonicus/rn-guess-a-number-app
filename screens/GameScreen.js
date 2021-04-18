@@ -4,6 +4,7 @@ import Card from '../components/Card'
 import MainButton from '../components/MainButton'
 import NumberContainer from '../components/NumberContainer'
 import { Ionicons } from "@expo/vector-icons"
+import * as ScreenOrientation from 'expo-screen-orientation'
 import BodyText from '../components/BodyText'
 
 const generateRandomBetween = (min, max, exclude) => {
@@ -27,6 +28,8 @@ const renderListItem = (listLength, itemData) => {
 }
 
 const GameScreen = ({ userChoice, onGameOver }) => {
+  // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
+
   const initialGuess = generateRandomBetween(1, 100, userChoice)
   const [currentGuess, setCurrentGuess] = useState(initialGuess)
 
@@ -132,8 +135,6 @@ const GameScreen = ({ userChoice, onGameOver }) => {
       </View>
     )
   }
-
-
 }
 
 
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: Dimensions.get("window").height > 600 ? 20 : 10,
-    width: 500,
+    width: 400,
     maxWidth: "90%"
   },
   controls: {

@@ -220,4 +220,134 @@ export default function App() {
 ```
 
 --------------------------------
+# Platform API
+API qui indique la plateforme sur laquelle on se trouve. Il suffit de l'utiliser dans une ternaire.
 
+Exemple
+```javascript
+import { View, Text, StyleSheet, Platform } from 'react-native'
+
+const Header = ({ title }) => {
+  return (
+    <View style={styles.header}>
+      <Text style={styles.headerTitle}>{title}</Text>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  header: {
+    width: "100%",
+    height: 90,
+    paddingTop: 40,
+    backgroundColor: Platform.OS === "android" ? Colors.primary : "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomColor: Platform.OS === "ios" ? "#ccc" : "transparent",
+    borderBottomWidth: Platform.OS === "ios" ? 1 : 0
+  },
+  headerTitle: {
+    color: Platform.OS === "ios" ? Colors.primary : "white",
+    fontSize: 20,
+    fontFamily: 'open-sans-bold',
+  }
+})
+
+export default Header
+
+```
+
+
+Autre Exemple
+```javascript
+import { View, Text, StyleSheet, Platform } from 'react-native'
+
+const Header = ({ title }) => {
+  return (
+    // <View style={styles.header}>
+    <View style={{ ...styles.headerBase, ...Platform.select({ ios: styles.headerIOS, android: styles.headerAndroid }) }}>
+      <Text style={styles.headerTitle}>{title}</Text>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  headerBase: {
+    width: "100%",
+    height: 90,
+    paddingTop: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerIOS: {
+    backgroundColor: "white",
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1
+  },
+  headerAndroid: {
+    backgroundColor: Colors.primary,
+  },
+  headerTitle: {
+    color: Platform.OS === "ios" ? Colors.primary : "white",
+    fontSize: 20,
+    fontFamily: 'open-sans-bold',
+  }
+})
+
+export default Header
+
+```
+
+
+
+--------------------------------
+# Composant de base
+`TouchableNativeFeedback` permet d'avoir une intéraction sur un élément sur Android, type button, comme `TouchableOpacity` qui lui fonctionne sur iOs. Couplé à `Platform` API, ça donne ça :
+
+Exemple
+```javascript
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native'
+
+import Colors from '../constants/colors'
+
+const MainButton = ({ children, onPress }) => {
+
+  let ButtonComponent = TouchableOpacity
+
+  if (Platform.OS === 'android' && Platform.Versionn >= 21) {
+    ButtonComponent = TouchableNativeFeedback
+  }
+  return (
+    // on doit encapsuler le bouton dans une View si on veut garder sous controle l'effet du bouton, hack de styles sur RN
+    <View style={styles.buttonContainer}>
+      <ButtonComponent onPress={onPress}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>{children}</Text>
+        </View>
+      </ButtonComponent>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    borderRadius: 25,
+    overflow: 'hidden'
+  },
+  button: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 25
+  },
+  buttonText: {
+    color: "white",
+    fontFamily: "open-sans",
+    fontSize: 20
+  }
+})
+
+export default MainButton
+
+```
