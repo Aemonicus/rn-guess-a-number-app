@@ -31,9 +31,24 @@ const GameScreen = ({ userChoice, onGameOver }) => {
   const [currentGuess, setCurrentGuess] = useState(initialGuess)
 
   const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()])
+  const [availableDeviceWidth, setAvailableDeviceWidth] = useState(Dimensions.get("window").width)
+  const [availableDeviceHeight, setAvailableDeviceHeight] = useState(Dimensions.get("window").height)
 
   const currentLow = useRef(1)
   const currentHigh = useRef(100)
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setAvailableDeviceWidth(Dimensions.get("window").width)
+      setAvailableDeviceHeight(Dimensions.get("window").height)
+    }
+
+    Dimensions.addEventListener("change", updateLayout)
+
+    return () => {
+      Dimensions.removeEventListener("change", updateLayout)
+    }
+  })
 
   useEffect(() => {
     if (currentGuess === userChoice) {
@@ -59,32 +74,66 @@ const GameScreen = ({ userChoice, onGameOver }) => {
     setPastGuesses(curPastGuesses => [nextNumber.toString(), ...curPastGuesses])
   }
   // Exemple d'utilisation de l'objet Dimensions
-  if (Dimensions.get("window").height > 600) {
-    return <View>...</View>
+  // if (Dimensions.get("window").height > 600) {
+  //   return <View>...</View>
+  // }
+
+  let listContainerStyle = styles.listContainer
+
+  if (availableDeviceWidth < 350) {
+    listContainerStyle = styles.listContainerBig
   }
 
-  return (
-    <View style={styles.screen}>
-      <Text>Opponent's Guess</Text>
-      <NumberContainer>{currentGuess}</NumberContainer>
-      <Card style={styles.buttonContainer}>
-        <MainButton onPress={() => nextGuessHandler('lower')} ><Ionicons name="md-remove" size={24} color="white" /></MainButton>
-        <MainButton onPress={() => nextGuessHandler('higher')} ><Ionicons name="md-add" size={24} color="white" /></MainButton>
-      </Card>
-      <View style={styles.listContainer}>
-        {/* ScrollView Version  */}
-        {/* <ScrollView contentContainerStyle={styles.list}>
+  if (availableDeviceHeight < 500) {
+    return (
+      <View style={styles.screen}>
+        <Text>Opponent's Guess</Text>
+        <View style={styles.controls}>
+          <MainButton onPress={() => nextGuessHandler('lower')} ><Ionicons name="md-remove" size={24} color="white" /></MainButton>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <MainButton onPress={() => nextGuessHandler('higher')} ><Ionicons name="md-add" size={24} color="white" /></MainButton>
+        </View>
+        <View style={styles.listContainerStyle}>
+          {/* ScrollView Version  */}
+          {/* <ScrollView contentContainerStyle={styles.list}>
+            {pastGuesses.map((item, index) => renderListItem(item, pastGuesses.length - index))}
+          </ScrollView> */}
+          <FlatList
+            data={pastGuesses}
+            renderItem={renderListItem.bind(this, pastGuesses.length)}
+            keyExtractor={item => item}
+            contentContainerStyle={styles.list}
+          />
+        </View>
+      </View>
+    )
+  } else {
+
+    return (
+      <View style={styles.screen}>
+        <Text>Opponent's Guess</Text>
+        <NumberContainer>{currentGuess}</NumberContainer>
+        <Card style={styles.buttonContainer}>
+          <MainButton onPress={() => nextGuessHandler('lower')} ><Ionicons name="md-remove" size={24} color="white" /></MainButton>
+          <MainButton onPress={() => nextGuessHandler('higher')} ><Ionicons name="md-add" size={24} color="white" /></MainButton>
+        </Card>
+        <View style={styles.listContainer}>
+          {/* ScrollView Version  */}
+          {/* <ScrollView contentContainerStyle={styles.list}>
           {pastGuesses.map((item, index) => renderListItem(item, pastGuesses.length - index))}
         </ScrollView> */}
-        <FlatList
-          data={pastGuesses}
-          renderItem={renderListItem.bind(this, pastGuesses.length)}
-          keyExtractor={item => item}
-          contentContainerStyle={styles.list}
-        />
+          <FlatList
+            data={pastGuesses}
+            renderItem={renderListItem.bind(this, pastGuesses.length)}
+            keyExtractor={item => item}
+            contentContainerStyle={styles.list}
+          />
+        </View>
       </View>
-    </View>
-  )
+    )
+  }
+
+
 }
 
 
@@ -101,9 +150,19 @@ const styles = StyleSheet.create({
     width: 500,
     maxWidth: "90%"
   },
+  controls: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "80%"
+  },
   listContainer: {
     flex: 1,
     width: Dimensions.get("window").width > 350 ? "60%" : "80%"
+  },
+  listContainerBig: {
+    flex: 1,
+    width: "80%"
   },
   list: {
     flexGrow: 1,
